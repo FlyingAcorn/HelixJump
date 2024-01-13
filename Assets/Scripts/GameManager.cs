@@ -37,7 +37,5 @@ public class GameManager : Singleton<GameManager>
         }
         else throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         OnGameStateChanged?.Invoke(newState);
-
-
     }
 }
