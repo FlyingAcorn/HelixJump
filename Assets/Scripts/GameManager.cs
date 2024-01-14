@@ -1,7 +1,33 @@
 using System;
 public class GameManager : Singleton<GameManager>
 {
-    public static event Action<GameState> OnGameStateChanged; 
+    public static event Action<GameState> OnGameStateChanged;
+    private int _comboCount;
+    private int _scoreCount;
+    public int ComboCount
+    {
+        get => _comboCount;
+        set => _comboCount = value;
+    }
+
+    public int ScoreCount
+    {
+        get => _scoreCount;
+        set => _scoreCount += ComboCount * value;
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        UpdateGameState(GameState.Play);
+    }
+
+    void Start()
+    {
+       
+        
+    }
+
     public enum GameState
     {
         Play,
@@ -14,6 +40,9 @@ public class GameManager : Singleton<GameManager>
 
     public void UpdateGameState(GameState newState)
     {
+        var sfxManager = SfxManager.Instance;
+        var uiManager = UIManager.Instance;
+        var musicManager = MusicManager.Instance;
         state = newState;
         if (newState == GameState.Pause)
         {
@@ -21,7 +50,7 @@ public class GameManager : Singleton<GameManager>
         }
         else if (newState == GameState.Play)
         {
-            
+            musicManager.PlayMusic();
         }
         else if (newState == GameState.ChooseLevel)
         {

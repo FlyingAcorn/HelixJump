@@ -29,7 +29,7 @@ where T : Component
             return _instance;
         }
     }
-    protected void Awake()
+    protected virtual void Awake()
     {
         if (_instance == null)
         {

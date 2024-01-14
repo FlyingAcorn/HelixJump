@@ -18,6 +18,8 @@ public class HelixController : MonoBehaviour
 
    public void Shatter()
    {
+      var soundManager = SfxManager.Instance;
+      soundManager.PlaySfx(3,true);
       foreach (var t in allChunks)
       {
          t.transform.DOScale(new Vector3(0, 0, 0), 2);

@@ -11,34 +11,27 @@ public class Ball : MonoBehaviour
     {
         _myBody = GetComponent<Rigidbody>();
     }
-    private void Update()
-    {
-        VelocityEffects();
-    }
-    private void VelocityEffects()
-    { 
-        flame.gameObject.SetActive(_myBody.velocity.y < -10);
-        smoke.gameObject.SetActive(_myBody.velocity.y < -15);
-    }
-
     private void OnTriggerEnter(Collider trigger)
     {
-        if (trigger.gameObject.layer == 8)
+        if (trigger.TryGetComponent(out HelixTrigger helixTrigger))
         {
+            helixTrigger.Score();
+            flame.gameObject.SetActive(GameManager.Instance.ComboCount >= 3);
+            smoke.gameObject.SetActive(GameManager.Instance.ComboCount >= 5);
         }
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 6)
-        {
-            Instantiate(smoke.gameObject.activeSelf ? magicHit : hit, transform.position, smoke.transform.rotation);
-            HelixController allChunks = collision.gameObject.GetComponentInParent<HelixController>();
-            if (smoke.gameObject.activeSelf) allChunks.Shatter();
-            _myBody.velocity = Vector2.up * bounceForce;
-        }
-        if (collision.gameObject.layer == 7)
-        {
-            GameManager.Instance.UpdateGameState(GameManager.GameState.Lose);
-        }
+        
+        var gameManager = GameManager.Instance;
+        Instantiate(gameManager.ComboCount >=5 ? magicHit : hit, transform.position, smoke.transform.rotation);
+        SfxManager.Instance.PlaySfx(gameManager.ComboCount >=5 ? 2 : 1);
+        HelixController allChunks = collision.gameObject.GetComponentInParent<HelixController>();
+        if (gameManager.ComboCount >=5) allChunks.Shatter();
+        flame.gameObject.SetActive(false);
+        smoke.gameObject.SetActive(false);
+        if (collision.gameObject.layer == 6) _myBody.velocity = Vector2.up * bounceForce;
+        if (collision.gameObject.layer == 7) gameManager.UpdateGameState(GameManager.GameState.Lose);
+        gameManager.ComboCount = 0;
     }
 }
