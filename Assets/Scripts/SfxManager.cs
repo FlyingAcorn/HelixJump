@@ -10,7 +10,7 @@ public class SfxManager : Singleton<SfxManager>
     }
     public void PlaySfx(int sfx, bool reset = false)
     {
-        if (_soundFX.isPlaying && sfx != 3) return;
+        if (_soundFX.isPlaying && sfx != 3 && sfx != 0) return;
         var sound = fX[sfx];
         if (reset)
         {

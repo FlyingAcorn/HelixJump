@@ -1,9 +1,11 @@
 using System;
+
 public class GameManager : Singleton<GameManager>
 {
     public static event Action<GameState> OnGameStateChanged;
     private int _comboCount;
     private int _scoreCount;
+
     public int ComboCount
     {
         get => _comboCount;
@@ -24,8 +26,8 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {
-       
-        
+
+
     }
 
     public enum GameState
@@ -36,6 +38,7 @@ public class GameManager : Singleton<GameManager>
         Win,
         ChooseLevel,
     }
+
     public GameState state;
 
     public void UpdateGameState(GameState newState)
@@ -46,25 +49,28 @@ public class GameManager : Singleton<GameManager>
         state = newState;
         if (newState == GameState.Pause)
         {
-            
+
         }
         else if (newState == GameState.Play)
         {
             musicManager.PlayMusic();
+            HelixManager.Instance.HelixSpawner();
         }
         else if (newState == GameState.ChooseLevel)
         {
-            
+
         }
         else if (newState == GameState.Lose)
         {
-            
+
         }
         else if (newState == GameState.Win)
         {
 
         }
         else throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+
         OnGameStateChanged?.Invoke(newState);
     }
+    
 }

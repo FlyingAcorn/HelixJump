@@ -27,6 +27,7 @@ public class HelixController : MonoBehaviour
          t.gameObject.TryGetComponent(out Renderer chunk);
          chunk.material.DOColor(Color.red, 1f);
       }
-      DOVirtual.DelayedCall(1,()=> Destroy(gameObject));
+      DOVirtual.DelayedCall(1,()=> this.gameObject.SetActive(false));
+      HelixManager.Instance.pooledHelixes.Add(this.gameObject);
    }
 }

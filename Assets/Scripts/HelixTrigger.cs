@@ -7,6 +7,8 @@ public class HelixTrigger : MonoBehaviour
         sfxManager.PlaySfx(0);
         GameManager.Instance.ScoreCount ++;
         GameManager.Instance.ComboCount ++;
+        transform.parent.gameObject.SetActive(false);
+        HelixManager.Instance.pooledHelixes.Add(this.transform.parent.gameObject);
 
     }
 }
