@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,9 +11,9 @@ public class HelixManager : Singleton<HelixManager>
     public List<GameObject> pooledHelixes = new List<GameObject>();
     private int _midHelixAmount = 5;
     private int _startHelixAmount = 10;
-    private int _winHelixAmount = 1;
     private float _lastYPos = 23;
     private float _lastYAngle;
+    private GameObject _chosenHelix;
 
     protected override void Awake()
     {
@@ -30,7 +29,6 @@ public class HelixManager : Singleton<HelixManager>
             for (int j = 0; j < _midHelixAmount; j++)
             {
                 GameObject objmid = Instantiate(midHelixes[i],transform);
-                objmid.SetActive(false);
                 pooledHelixes.Add(objmid);
             }
         }
@@ -38,71 +36,50 @@ public class HelixManager : Singleton<HelixManager>
         for (int i = 0; i < _startHelixAmount; i++)
         {
             GameObject objstart = Instantiate(startHelix,transform);
-            objstart.SetActive(false);
             pooledHelixes.Add(objstart);
         }
         // winHelix
-        GameObject objwin = Instantiate(startHelix,transform);
-        objwin.SetActive(false);
-        pooledHelixes.Add(objwin);
+        /*GameObject objwin = Instantiate(winHelix,transform);
+        pooledHelixes.Add(objwin);*/
     }
-
-    private GameObject GetHelix()
+    public void InitialHelixSpawner()
     {
-        for (int i = 0; i < pooledHelixes.Count; i++)
+        for (int i = 0; i < 5; i++)
         {
-            if (pooledHelixes[i].CompareTag("StartHelix"))
-            {
-                return pooledHelixes[i];
-            }
+            SpawnHelix();
         }
-
-        return null;
     }
-
-    public void HelixSpawner()
+    //HELIX TRIGGERLA HELIX CONTROLLERI KONTROL ET VE PLAYTEST YAP
+    public void SpawnHelix()
     {
-        SpawnHelix();
-    }
-    
-    
-// burayı düzenle temiz kod olsun coroutine yada normal method olarak 
-    private void SpawnHelix()
-    {
-        while (true)
-        {
-            var helixSpawnTypeRando = Random.Range(0, 6);
-            var randomHeight = Random.Range(3, 5);
+        var helixSpawnTypeRando = Random.Range(0, 6);
+            float randomHeight = Random.Range(2, 3);
             _lastYPos -= randomHeight;
             _lastYAngle = Random.Range(0, 360);
-            if (helixSpawnTypeRando == 5)
+            var gameObjects = pooledHelixes.FindAll(t => t.CompareTag("StartHelix"));
+            if (helixSpawnTypeRando == 5 && gameObjects.Count >= 5)
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    var startingHelix = GetHelix();
-                    if (startingHelix == null) continue;
-                    startingHelix.transform.position = new Vector3(0, _lastYPos -0.65f, 0);
-                    _lastYPos = startingHelix.transform.position.y;
-                    startingHelix.transform.Rotate(new Vector3(0,_lastYAngle + (i*3),0));
-                    startingHelix.SetActive(true);
-                     pooledHelixes.Remove(startingHelix);
+                    _chosenHelix = gameObjects.First();
+                    _chosenHelix.transform.SetPositionAndRotation
+                        (new Vector3(0, _lastYPos -(0.65f*i), 0),Quaternion.Euler(new Vector3(0,_lastYAngle + (i*3),0)));
+                    _chosenHelix.SetActive(true);
+                    gameObjects.Remove(_chosenHelix);
+                    pooledHelixes.Remove(_chosenHelix);
                 }
             }
             else
             {
-                if (pooledHelixes == null) continue;
-                    pooledHelixes.Shuffle();
-                    var midHelix = pooledHelixes.First();
-                if (midHelix == null) continue;
-                midHelix.transform.position = new Vector3(0, _lastYPos, 0);
-                _lastYPos = midHelix.transform.position.y;
-                midHelix.transform.Rotate(new Vector3(0,_lastYAngle ,0));
-                midHelix.SetActive(true);
-                pooledHelixes.Remove(midHelix);
+                 pooledHelixes.Shuffle();
+                 _chosenHelix = pooledHelixes.First();
+                 _chosenHelix.transform.SetPositionAndRotation
+                     (new Vector3(0, _lastYPos, 0),Quaternion.Euler(new Vector3(0,_lastYAngle ,0)));
+                 _chosenHelix.SetActive(true);
+                pooledHelixes.Remove(_chosenHelix);
             }
-        }
+            _lastYPos = _chosenHelix.transform.position.y;
     }
-   
 }
 
 public static class Shuffler 

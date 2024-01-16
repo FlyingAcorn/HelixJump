@@ -54,7 +54,7 @@ public class GameManager : Singleton<GameManager>
         else if (newState == GameState.Play)
         {
             musicManager.PlayMusic();
-            HelixManager.Instance.HelixSpawner();
+            HelixManager.Instance.InitialHelixSpawner();
         }
         else if (newState == GameState.ChooseLevel)
         {
