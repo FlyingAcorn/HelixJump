@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -62,7 +63,8 @@ public class GameManager : Singleton<GameManager>
         }
         else if (newState == GameState.Lose)
         {
-
+            Time.timeScale = 0;
+            sfxManager.PlaySfx(4 ,true);
         }
         else if (newState == GameState.Win)
         {

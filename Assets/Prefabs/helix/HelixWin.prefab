@@ -61,6 +61,8 @@ MonoBehaviour:
   - {fileID: 6120487561347921646}
   - {fileID: 4437378521913347636}
   - {fileID: 7991934624303686964}
+  allTriggers: []
+  _material: {fileID: 0}
 --- !u!1 &2904047665085961687
 GameObject:
   m_ObjectHideFlags: 0

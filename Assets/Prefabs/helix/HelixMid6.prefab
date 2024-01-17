@@ -256,6 +256,7 @@ MonoBehaviour:
   - {fileID: 808174980174638497}
   - {fileID: 8642758468896342764}
   - {fileID: 3990578555724378361}
+  allTriggers:
   - {fileID: 6373279161294709115}
   - {fileID: 8272551826657797333}
 --- !u!1 &3990578555724378361
@@ -270,8 +271,8 @@ GameObject:
   - component: {fileID: 3420943903432373940}
   - component: {fileID: 7318380663185927786}
   - component: {fileID: 3621454074976962529}
-  m_Layer: 6
-  m_Name: Cylinder.001
+  m_Layer: 7
+  m_Name: DangerChunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -482,7 +483,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6373279161294709115}
   m_LocalRotation: {x: -0.6532815, y: 0.27059805, z: 0.27059805, w: 0.6532815}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
   m_LocalScale: {x: 150, y: 150, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -691,7 +692,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8272551826657797333}
   m_LocalRotation: {x: -0.27059817, y: -0.65328145, z: -0.6532815, w: 0.27059805}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
   m_LocalScale: {x: 150, y: 150, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -786,8 +787,8 @@ GameObject:
   - component: {fileID: 4868852100988276236}
   - component: {fileID: 2660709561099801114}
   - component: {fileID: 7030238811248733347}
-  m_Layer: 6
-  m_Name: Cylinder.007
+  m_Layer: 7
+  m_Name: DangerChunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

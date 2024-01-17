@@ -1,17 +1,10 @@
-using System;
 using UnityEngine;
 using DG.Tweening;
 public class HelixTrigger : MonoBehaviour
 {
-    private void OnEnable()
-    {
-        transform.localScale = new Vector3(150, 150, 1);
-    }
-
     public void Score()
     {
-        HelixManager.Instance.pooledHelixes.Add(transform.parent.gameObject);
-        Shatter();
+        Shrink();
         var sfxManager = SfxManager.Instance;
         sfxManager.PlaySfx(0);
         GameManager.Instance.ScoreCount ++;
@@ -20,11 +13,19 @@ public class HelixTrigger : MonoBehaviour
         DOVirtual.DelayedCall(2,()=> gameObject.transform.parent.gameObject.SetActive(false));
     }
     
-    private void Shatter()
+    private void Shrink()
     {
         foreach (var t in gameObject.GetComponentInParent<HelixController>().allChunks)
         {
-            t.transform.DOScale(new Vector3(0, 0, 0), 1);
+            t.TryGetComponent(out MeshCollider tCollider);
+            tCollider.enabled = false;
+            t.transform.DOScale(new Vector3(0, 0, 0), 1.5f);
+        }
+
+        foreach (var t in gameObject.GetComponentInParent<HelixController>().allTriggers)
+        {
+            t.TryGetComponent(out MeshCollider tCollider);
+            tCollider.enabled = false;
         }
     }
 }

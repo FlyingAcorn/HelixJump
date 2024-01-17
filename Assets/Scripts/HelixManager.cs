@@ -53,32 +53,34 @@ public class HelixManager : Singleton<HelixManager>
     public void SpawnHelix()
     {
         var helixSpawnTypeRando = Random.Range(0, 6);
-            float randomHeight = Random.Range(2, 3);
-            _lastYPos -= randomHeight;
-            _lastYAngle = Random.Range(0, 360);
-            var gameObjects = pooledHelixes.FindAll(t => t.CompareTag("StartHelix"));
-            if (helixSpawnTypeRando == 5 && gameObjects.Count >= 5)
+        float randomHeight = Random.Range(2, 3);
+        _lastYPos -= randomHeight;
+        _lastYAngle = Random.Range(0, 360);
+        var gameObjects = pooledHelixes.FindAll(t => t.CompareTag("StartHelix"));
+        if (helixSpawnTypeRando == 5 && gameObjects.Count >= 5)
+        {
+            for (int i = 0; i < 5; i++)
             {
-                for (int i = 0; i < 5; i++)
-                {
-                    _chosenHelix = gameObjects.First();
-                    _chosenHelix.transform.SetPositionAndRotation
-                        (new Vector3(0, _lastYPos -(0.65f*i), 0),Quaternion.Euler(new Vector3(0,_lastYAngle + (i*3),0)));
-                    _chosenHelix.SetActive(true);
-                    gameObjects.Remove(_chosenHelix);
-                    pooledHelixes.Remove(_chosenHelix);
-                }
-            }
-            else
-            {
-                 pooledHelixes.Shuffle();
-                 _chosenHelix = pooledHelixes.First();
-                 _chosenHelix.transform.SetPositionAndRotation
-                     (new Vector3(0, _lastYPos, 0),Quaternion.Euler(new Vector3(0,_lastYAngle ,0)));
-                 _chosenHelix.SetActive(true);
+                _chosenHelix = gameObjects.First();
+                gameObjects.Remove(_chosenHelix);
                 pooledHelixes.Remove(_chosenHelix);
+                _chosenHelix.transform.SetPositionAndRotation
+                    (new Vector3(0, _lastYPos -(0.65f*i), 0),Quaternion.Euler(new Vector3(0,_lastYAngle + (i*3),0)));
+                _chosenHelix.SetActive(true);
             }
-            _lastYPos = _chosenHelix.transform.position.y;
+            gameObjects.Clear();
+        }
+        else
+        {
+             pooledHelixes.Shuffle();
+             _chosenHelix = pooledHelixes.First();
+             pooledHelixes.Remove(_chosenHelix);
+             _chosenHelix.transform.SetPositionAndRotation
+                 (new Vector3(0, _lastYPos, 0),Quaternion.Euler(new Vector3(0,_lastYAngle ,0)));
+             _chosenHelix.SetActive(true);
+        }
+        _lastYPos = _chosenHelix.transform.position.y;
+        _chosenHelix = null;
     }
 }
 

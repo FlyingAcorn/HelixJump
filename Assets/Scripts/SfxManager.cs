@@ -10,12 +10,8 @@ public class SfxManager : Singleton<SfxManager>
     }
     public void PlaySfx(int sfx, bool reset = false)
     {
-        if (_soundFX.isPlaying && sfx != 3 && sfx != 0) return;
         var sound = fX[sfx];
-        if (reset)
-        {
-            _soundFX.pitch = 1f;
-        }
+        if (_soundFX.clip == fX[1] && sound == fX[1]) return;
         if (sfx == _lastFx)
         {
             _soundFX.pitch += GameManager.Instance.ComboCount * 0.1f;
