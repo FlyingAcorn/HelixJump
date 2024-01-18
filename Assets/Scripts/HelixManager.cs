@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class HelixManager : Singleton<HelixManager>
@@ -8,20 +10,20 @@ public class HelixManager : Singleton<HelixManager>
     [SerializeField] private GameObject[] midHelixes;
     [SerializeField] private GameObject startHelix;
     [SerializeField] private GameObject winHelix;
-    public List<GameObject> pooledHelixes = new List<GameObject>();
+    public List<GameObject> pooledFalseHelixes = new List<GameObject>();
+    public List<GameObject> pooledActiveHelixes = new List<GameObject>();
     private int _midHelixAmount = 5;
     private int _startHelixAmount = 10;
     private float _lastYPos = 23;
     private float _lastYAngle;
     private GameObject _chosenHelix;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         LoadHelixes();
     }
 
-    public void LoadHelixes()
+    private void LoadHelixes()
     {
         //MidHelixes
         for (int i = 0; i < midHelixes.Length; i++)
@@ -29,14 +31,14 @@ public class HelixManager : Singleton<HelixManager>
             for (int j = 0; j < _midHelixAmount; j++)
             {
                 GameObject objmid = Instantiate(midHelixes[i],transform);
-                pooledHelixes.Add(objmid);
+                pooledFalseHelixes.Add(objmid);
             }
         }
         //StartHelix
         for (int i = 0; i < _startHelixAmount; i++)
         {
             GameObject objstart = Instantiate(startHelix,transform);
-            pooledHelixes.Add(objstart);
+            pooledFalseHelixes.Add(objstart);
         }
         // winHelix
         /*GameObject objwin = Instantiate(winHelix,transform);
@@ -44,26 +46,27 @@ public class HelixManager : Singleton<HelixManager>
     }
     public void InitialHelixSpawner()
     {
+        _lastYPos = 23;
         for (int i = 0; i < 5; i++)
         {
             SpawnHelix();
         }
     }
-    //HELIX TRIGGERLA HELIX CONTROLLERI KONTROL ET VE PLAYTEST YAP
     public void SpawnHelix()
     {
         var helixSpawnTypeRando = Random.Range(0, 6);
         float randomHeight = Random.Range(2, 3);
         _lastYPos -= randomHeight;
         _lastYAngle = Random.Range(0, 360);
-        var gameObjects = pooledHelixes.FindAll(t => t.CompareTag("StartHelix"));
+        var gameObjects = pooledFalseHelixes.FindAll(t => t.CompareTag("StartHelix"));
         if (helixSpawnTypeRando == 5 && gameObjects.Count >= 5)
         {
             for (int i = 0; i < 5; i++)
             {
                 _chosenHelix = gameObjects.First();
                 gameObjects.Remove(_chosenHelix);
-                pooledHelixes.Remove(_chosenHelix);
+                pooledFalseHelixes.Remove(_chosenHelix);
+                pooledActiveHelixes.Add(_chosenHelix);
                 _chosenHelix.transform.SetPositionAndRotation
                     (new Vector3(0, _lastYPos -(0.65f*i), 0),Quaternion.Euler(new Vector3(0,_lastYAngle + (i*3),0)));
                 _chosenHelix.SetActive(true);
@@ -72,9 +75,10 @@ public class HelixManager : Singleton<HelixManager>
         }
         else
         {
-             pooledHelixes.Shuffle();
-             _chosenHelix = pooledHelixes.First();
-             pooledHelixes.Remove(_chosenHelix);
+             pooledFalseHelixes.Shuffle();
+             _chosenHelix = pooledFalseHelixes.First();
+             pooledFalseHelixes.Remove(_chosenHelix);
+             pooledActiveHelixes.Add(_chosenHelix);
              _chosenHelix.transform.SetPositionAndRotation
                  (new Vector3(0, _lastYPos, 0),Quaternion.Euler(new Vector3(0,_lastYAngle ,0)));
              _chosenHelix.SetActive(true);

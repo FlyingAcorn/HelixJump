@@ -1,14 +1,16 @@
 using UnityEngine;
-using UnityEngine.Audio;
-
 public class UIManager : Singleton<UIManager>
 {
-    [SerializeField] private AudioMixer audioMixer;
-    // bu setvolume kısmını slider yaptığında canvasa bağlayacaksın
-    // value aralığı min 0.0001 ile 1
-    //string olarakta mixer grubundaki adını alıcak(exposed kısmındakı sağust)
-    public void SetVolume(float volume, string group)
+    public GameObject[] panels;
+    public void CloseAllPanels()
     {
-        audioMixer.SetFloat(group, Mathf.Log10(volume) * 20f);
+        foreach (var t in panels)
+        {
+            t.SetActive(false);
+        }
+    }
+    public void ChangeUI( int panelIdx)
+    {
+        panels[panelIdx].SetActive(true);
     }
 }

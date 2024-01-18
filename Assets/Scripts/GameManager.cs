@@ -18,26 +18,20 @@ public class GameManager : Singleton<GameManager>
         get => _scoreCount;
         set => _scoreCount += ComboCount * value;
     }
-
-    protected override void Awake()
-    {
-        base.Awake();
-        UpdateGameState(GameState.Play);
-    }
-
-    void Start()
-    {
-
-
-    }
-
+    
     public enum GameState
     {
         Play,
+        Continue,
         Pause,
         Lose,
-        Win,
-        ChooseLevel,
+        Settings,
+        MainMenu,
+    }
+    
+    private void Start()
+    {
+        UpdateGameState(GameState.MainMenu);
     }
 
     public GameState state;
@@ -48,30 +42,33 @@ public class GameManager : Singleton<GameManager>
         var uiManager = UIManager.Instance;
         var musicManager = MusicManager.Instance;
         state = newState;
+        uiManager.CloseAllPanels();
         if (newState == GameState.Pause)
         {
-
+          uiManager.ChangeUI(2);
         }
-        else if (newState == GameState.Play)
+        if (newState == GameState.Continue)
         {
+            uiManager.ChangeUI(0);
+        }
+        if (newState == GameState.Settings)
+        {
+            uiManager.ChangeUI(4);
+        }
+        if (newState == GameState.Play)
+        {
+            uiManager.ChangeUI(0);
             musicManager.PlayMusic();
             HelixManager.Instance.InitialHelixSpawner();
         }
-        else if (newState == GameState.ChooseLevel)
+        if (newState == GameState.MainMenu)
         {
-
+          uiManager.ChangeUI(1);
         }
-        else if (newState == GameState.Lose)
+        if (newState == GameState.Lose)
         {
-            Time.timeScale = 0;
-            sfxManager.PlaySfx(4 ,true);
+            uiManager.ChangeUI(3);
         }
-        else if (newState == GameState.Win)
-        {
-
-        }
-        else throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
-
         OnGameStateChanged?.Invoke(newState);
     }
     

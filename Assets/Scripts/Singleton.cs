@@ -29,15 +29,4 @@ where T : Component
             return _instance;
         }
     }
-    protected virtual void Awake()
-    {
-        if (_instance == null)
-        {
-            DontDestroyOnLoad(this);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 }

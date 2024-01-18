@@ -11,6 +11,7 @@ public class HelixController : MonoBehaviour
    }
    private void HelixControls()
    {
+      if ( GameManager.Instance.state is not GameManager.GameState.Play or GameManager.GameState.Continue) return;
       if (Input.touchCount != 1) return;
       var touchInput = Input.GetTouch(0);
       if (touchInput.phase == TouchPhase.Moved)
@@ -52,9 +53,8 @@ public class HelixController : MonoBehaviour
          t.TryGetComponent(out MeshCollider tCollider);
          tCollider.enabled = true;
       }
-      if (!HelixManager.Instance.pooledHelixes.Contains(gameObject))
-      {
-         HelixManager.Instance.pooledHelixes.Add(this.gameObject);
-      }
+      if (HelixManager.Instance.pooledFalseHelixes.Contains(gameObject)) return;
+      HelixManager.Instance.pooledActiveHelixes.Remove(gameObject);
+      HelixManager.Instance.pooledFalseHelixes.Add(gameObject);
    }
 }

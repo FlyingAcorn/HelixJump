@@ -7,6 +7,37 @@ public class Ball : MonoBehaviour
     [SerializeField] private GameObject smoke;
     [SerializeField] private GameObject hit;
     [SerializeField] private GameObject magicHit;
+    private float _velocityY;
+
+    private void Awake()
+    {
+        GameManager.OnGameStateChanged += GameManagerOnOnGameStateChanged;
+    }
+
+    private void GameManagerOnOnGameStateChanged(GameManager.GameState state)
+    {
+        if (state is GameManager.GameState.Play or GameManager.GameState.Continue)
+        {
+            _myBody.constraints = (RigidbodyConstraints)122;
+            _myBody.velocity = new Vector3(0, _velocityY, 0);
+            _velocityY = 0;
+        }
+        else
+        {
+            _velocityY = _myBody.velocity.y;
+            _myBody.constraints = RigidbodyConstraints.FreezeAll;
+        }
+        if (state is GameManager.GameState.Play)
+        {
+            gameObject.transform.position = new Vector3(0, 25, -2);
+        }
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStateChanged -= GameManagerOnOnGameStateChanged;
+    }
+
     private void Start()
     {
         _myBody = GetComponent<Rigidbody>();
