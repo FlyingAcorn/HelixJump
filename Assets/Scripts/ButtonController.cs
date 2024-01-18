@@ -44,13 +44,13 @@ public class ButtonController : MonoBehaviour
         GameManager.Instance.UpdateGameState(GameManager.GameState.Continue);
     }
 
-    // Restart butonunu düzelt ve ui duzgun çalışmaısnı sağla
-    // bazen reset attığında paneller doğru çalışmıyor
-    // ve restarta tıkladığında sadece 1 tane yok ediyor
-    // bunun nedeni helixcontroller
+   
     public void Restart()
     {
-        foreach (var t in HelixManager.Instance.pooledActiveHelixes)
+        // burada dummy açıp yapmak yerine for kullanabilirdin.Yüksek ihtimalle o daha verimli 
+        //cihana sor
+        var dummyList = new List<GameObject>(HelixManager.Instance.pooledActiveHelixes);
+        foreach (var t in dummyList)
         {
             t.SetActive(false);
         }
@@ -79,7 +79,7 @@ public class ButtonController : MonoBehaviour
         }
         else if (GameManager.Instance.state == GameManager.GameState.Settings)
         {
-            GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
+            GameManager.Instance.UpdateGameState(GameManager.GameState.Continue);
         }
         
     }

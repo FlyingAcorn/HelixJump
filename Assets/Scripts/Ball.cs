@@ -16,20 +16,22 @@ public class Ball : MonoBehaviour
 
     private void GameManagerOnOnGameStateChanged(GameManager.GameState state)
     {
-        if (state is GameManager.GameState.Play or GameManager.GameState.Continue)
+        if (state is GameManager.GameState.Play)
+        {
+            gameObject.transform.position = new Vector3(0, 25, -2);
+            _myBody.constraints = (RigidbodyConstraints)122;
+            _myBody.velocity = new Vector3(0, 0, 0);
+        }
+        else if (state is GameManager.GameState.Continue)
         {
             _myBody.constraints = (RigidbodyConstraints)122;
-            _myBody.velocity = new Vector3(0, _velocityY, 0);
+            _myBody.velocity = new Vector3(0,_velocityY,0);
             _velocityY = 0;
         }
         else
         {
             _velocityY = _myBody.velocity.y;
             _myBody.constraints = RigidbodyConstraints.FreezeAll;
-        }
-        if (state is GameManager.GameState.Play)
-        {
-            gameObject.transform.position = new Vector3(0, 25, -2);
         }
     }
 

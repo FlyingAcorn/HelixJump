@@ -11,7 +11,7 @@ public class HelixController : MonoBehaviour
    }
    private void HelixControls()
    {
-      if ( GameManager.Instance.state is not GameManager.GameState.Play or GameManager.GameState.Continue) return;
+      if ( GameManager.Instance.state is not (GameManager.GameState.Continue or GameManager.GameState.Play)) return;
       if (Input.touchCount != 1) return;
       var touchInput = Input.GetTouch(0);
       if (touchInput.phase == TouchPhase.Moved)
@@ -39,11 +39,12 @@ public class HelixController : MonoBehaviour
       }
       DOVirtual.DelayedCall(2,()=> this.gameObject.SetActive(false));
    }
-
+ // playtest et
    private void OnDisable()
    {
       foreach (var t in allChunks)
       {
+         t.transform.DOKill();
          t.transform.localScale = new Vector3(150, 150, 45);
          t.TryGetComponent(out MeshCollider tCollider);
          tCollider.enabled = true;
@@ -53,8 +54,14 @@ public class HelixController : MonoBehaviour
          t.TryGetComponent(out MeshCollider tCollider);
          tCollider.enabled = true;
       }
-      if (HelixManager.Instance.pooledFalseHelixes.Contains(gameObject)) return;
-      HelixManager.Instance.pooledActiveHelixes.Remove(gameObject);
-      HelixManager.Instance.pooledFalseHelixes.Add(gameObject);
+      if (!HelixManager.Instance.pooledFalseHelixes.Contains(gameObject))
+      {
+         HelixManager.Instance.pooledFalseHelixes?.Add(gameObject);
+      }
+      if (HelixManager.Instance.pooledActiveHelixes.Contains(gameObject))
+      {
+         HelixManager.Instance.pooledActiveHelixes?.Remove(gameObject);
+      }
+      
    }
 }

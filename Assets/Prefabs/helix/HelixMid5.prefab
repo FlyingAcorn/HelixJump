@@ -528,8 +528,8 @@ GameObject:
   - component: {fileID: 2402920986601590083}
   - component: {fileID: 8282302385495620466}
   - component: {fileID: 4573313563158936780}
-  m_Layer: 6
-  m_Name: Cylinder.003
+  m_Layer: 7
+  m_Name: DangerChunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
