@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
-
 public class ButtonController : MonoBehaviour
 {
     [SerializeField] private AudioMixer audioMixer;
@@ -54,6 +50,11 @@ public class ButtonController : MonoBehaviour
         {
             t.SetActive(false);
         }
+
+        GameManager.Instance.ScoreCount = 0;
+        GameManager.Instance.ComboCount = 1;
+        UIManager.Instance.Score();
+        UIManager.Instance.Combo();
         GameManager.Instance.UpdateGameState(GameManager.GameState.Play);
     }
 
@@ -77,7 +78,7 @@ public class ButtonController : MonoBehaviour
         {
             UIManager.Instance.ChangeUI(1);
         }
-        else if (GameManager.Instance.state == GameManager.GameState.Settings)
+        else if (GameManager.Instance.state == GameManager.GameState.Settings) // else de olurdu yuksek ihtimalle
         {
             GameManager.Instance.UpdateGameState(GameManager.GameState.Continue);
         }

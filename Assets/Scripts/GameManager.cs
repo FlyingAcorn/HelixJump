@@ -1,6 +1,4 @@
 using System;
-using UnityEngine;
-
 public class GameManager : Singleton<GameManager>
 {
     public static event Action<GameState> OnGameStateChanged;
@@ -16,7 +14,17 @@ public class GameManager : Singleton<GameManager>
     public int ScoreCount
     {
         get => _scoreCount;
-        set => _scoreCount += ComboCount * value;
+        set
+        {
+            if (value == 0)
+            {
+                _scoreCount = 0;
+            }
+            else
+            {
+                _scoreCount += ComboCount * value;
+            }
+        } 
     }
     
     public enum GameState
@@ -33,12 +41,9 @@ public class GameManager : Singleton<GameManager>
     {
         UpdateGameState(GameState.MainMenu);
     }
-
     public GameState state;
-
     public void UpdateGameState(GameState newState)
     {
-        var sfxManager = SfxManager.Instance;
         var uiManager = UIManager.Instance;
         var musicManager = MusicManager.Instance;
         state = newState;
@@ -64,12 +69,13 @@ public class GameManager : Singleton<GameManager>
         if (newState == GameState.MainMenu)
         {
           uiManager.ChangeUI(1);
+          uiManager.HighScore();
         }
         if (newState == GameState.Lose)
         {
             uiManager.ChangeUI(3);
+            uiManager.HighScore();
         }
         OnGameStateChanged?.Invoke(newState);
     }
-    
 }

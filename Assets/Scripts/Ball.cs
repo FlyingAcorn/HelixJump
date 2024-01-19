@@ -8,7 +8,8 @@ public class Ball : MonoBehaviour
     [SerializeField] private GameObject hit;
     [SerializeField] private GameObject magicHit;
     private float _velocityY;
-
+ // velocity cap koyabilirdin topu kovalıyorsun gibi bir noktadan sonra zorlasıyor
+ // verimli yolu varmı sor cıhana
     private void Awake()
     {
         GameManager.OnGameStateChanged += GameManagerOnOnGameStateChanged;
@@ -70,6 +71,7 @@ public class Ball : MonoBehaviour
         if (gameManager.ComboCount >=5) allChunks.Shatter();
         flame.gameObject.SetActive(false);
         smoke.gameObject.SetActive(false);
-        gameManager.ComboCount = 0;
+        gameManager.ComboCount = 1;
+        UIManager.Instance.Combo();
     }
 }

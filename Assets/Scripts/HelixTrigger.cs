@@ -7,8 +7,10 @@ public class HelixTrigger : MonoBehaviour
         Shrink();
         var sfxManager = SfxManager.Instance;
         sfxManager.PlaySfx(0);
-        GameManager.Instance.ScoreCount ++;
+        GameManager.Instance.ScoreCount =1;
         GameManager.Instance.ComboCount ++;
+        UIManager.Instance.Score();
+        UIManager.Instance.Combo();
         HelixManager.Instance.SpawnHelix();
         DOVirtual.DelayedCall(2,()=> gameObject.transform.parent.gameObject.SetActive(false));
     }

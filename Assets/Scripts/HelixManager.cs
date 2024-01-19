@@ -1,15 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class HelixManager : Singleton<HelixManager>
 {
     [SerializeField] private GameObject[] midHelixes;
     [SerializeField] private GameObject startHelix;
-    [SerializeField] private GameObject winHelix;
     public List<GameObject> pooledFalseHelixes = new List<GameObject>();
     public List<GameObject> pooledActiveHelixes = new List<GameObject>();
     private int _midHelixAmount = 5;
@@ -40,9 +37,6 @@ public class HelixManager : Singleton<HelixManager>
             GameObject objstart = Instantiate(startHelix,transform);
             pooledFalseHelixes.Add(objstart);
         }
-        // winHelix
-        /*GameObject objwin = Instantiate(winHelix,transform);
-        pooledHelixes.Add(objwin);*/
     }
     public void InitialHelixSpawner()
     {
@@ -87,7 +81,6 @@ public class HelixManager : Singleton<HelixManager>
         _chosenHelix = null;
     }
 }
-
 public static class Shuffler 
 {
     public static void Shuffle<T>(this IList<T> ts)

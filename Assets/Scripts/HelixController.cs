@@ -21,6 +21,9 @@ public class HelixController : MonoBehaviour
    {
       var soundManager = SfxManager.Instance;
       soundManager.PlaySfx(3,true);
+      GameManager.Instance.ScoreCount =1;
+      UIManager.Instance.Score();
+      UIManager.Instance.Combo();
       foreach (var t in allChunks)
       {
          t.TryGetComponent(out MeshCollider tCollider);
@@ -54,6 +57,9 @@ public class HelixController : MonoBehaviour
          t.TryGetComponent(out MeshCollider tCollider);
          tCollider.enabled = true;
       }
+      
+      // bu kısım file verenleri toparlamak için sorunun kaynağı virtual delay ve animasyonlardan kaynaklı
+      // cihana sor 
       if (!HelixManager.Instance.pooledFalseHelixes.Contains(gameObject))
       {
          HelixManager.Instance.pooledFalseHelixes?.Add(gameObject);
