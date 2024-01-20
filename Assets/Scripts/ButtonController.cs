@@ -1,15 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
+
 public class ButtonController : MonoBehaviour
 {
+    [SerializeField] private Image[] tickAndCross;
     [SerializeField] private AudioMixer audioMixer;
-    
-    // bu setvolume kısmını slider yaptığında canvasa bağlayacaksın
-    // value aralığı min 0.0001 ile 1
-    //string olarakta mixer grubundaki adını alıcak(exposed kısmındakı sağust)
-   
-    
+    public void SetSensitivity(float level)
+    {
+        HelixManager.Instance.rotationSpeed = level;
+    }
+
+    public void ReverseMovement()
+    {
+        HelixManager.Instance.reverse = !HelixManager.Instance.reverse;
+        tickAndCross[0].gameObject.SetActive(!HelixManager.Instance.reverse);
+        tickAndCross[1].gameObject.SetActive(HelixManager.Instance.reverse);
+    }
     public void SetMasterVolume(float volume)
     {
         audioMixer.SetFloat("SoundMaster", Mathf.Log10(volume) * 20f);

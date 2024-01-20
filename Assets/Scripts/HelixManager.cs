@@ -5,6 +5,9 @@ using Random = UnityEngine.Random;
 
 public class HelixManager : Singleton<HelixManager>
 {
+    //BUILD ALIRKEN ADAPTIVE PERFORMANGE IGNORE DEDIN CIHANA SOR 
+    public float rotationSpeed;
+    public bool reverse;
     [SerializeField] private GameObject[] midHelixes;
     [SerializeField] private GameObject startHelix;
     public List<GameObject> pooledFalseHelixes = new List<GameObject>();
@@ -19,7 +22,23 @@ public class HelixManager : Singleton<HelixManager>
     {
         LoadHelixes();
     }
-
+    
+    private void Update()
+    {
+        HelixControls();
+    }
+    private void HelixControls()
+    {
+        if ( GameManager.Instance.state is not (GameManager.GameState.Continue or GameManager.GameState.Play)) return;
+        if (Input.touchCount != 1) return;
+        var touchInput = Input.GetTouch(0);
+        if (touchInput.phase == TouchPhase.Moved)
+        {
+            transform.Rotate(new Vector3(0, touchInput.deltaPosition.x),
+                rotationSpeed * Time.deltaTime * (reverse ? -1 : 1));
+        }
+    }
+    
     private void LoadHelixes()
     {
         //MidHelixes

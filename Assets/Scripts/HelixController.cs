@@ -2,21 +2,9 @@ using DG.Tweening;
 using UnityEngine;
 public class HelixController : MonoBehaviour
 {
-   [SerializeField] private float rotationSpeed;
    public GameObject[] allChunks;
    public GameObject[] allTriggers;
-   private void Update()
-   {
-      HelixControls();
-   }
-   private void HelixControls()
-   {
-      if ( GameManager.Instance.state is not (GameManager.GameState.Continue or GameManager.GameState.Play)) return;
-      if (Input.touchCount != 1) return;
-      var touchInput = Input.GetTouch(0);
-      if (touchInput.phase == TouchPhase.Moved)
-      {transform.Rotate(new Vector3(0,touchInput.deltaPosition.x) ,rotationSpeed * Time.deltaTime);}
-   }
+   
    public void Shatter()
    {
       var soundManager = SfxManager.Instance;
